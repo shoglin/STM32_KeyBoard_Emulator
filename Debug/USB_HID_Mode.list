@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00007480  0800010c  0800010c  0000110c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000078  0800758c  0800758c  0000858c  2**2
+  2 .rodata       00000070  0800758c  0800758c  0000858c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08007604  08007604  00009158  2**0
+  3 .ARM.extab    00000000  080075fc  080075fc  00009158  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000008  08007604  08007604  00008604  2**2
+  4 .ARM          00000008  080075fc  080075fc  000085fc  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  0800760c  0800760c  00009158  2**0
+  5 .preinit_array 00000000  08007604  08007604  00009158  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  0800760c  0800760c  0000860c  2**2
+  6 .init_array   00000004  08007604  08007604  00008604  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  08007610  08007610  00008610  2**2
+  7 .fini_array   00000004  08007608  08007608  00008608  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         00000158  20000000  08007614  00009000  2**2
+  8 .data         00000158  20000000  0800760c  00009000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000007dc  20000158  0800776c  00009158  2**2
+  9 .bss          000007dc  20000158  08007764  00009158  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  20000934  0800776c  00009934  2**0
+ 10 ._user_heap_stack 00000604  20000934  08007764  00009934  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00009158  2**0
                   CONTENTS, READONLY
@@ -130,7 +130,7 @@ void typeOnKeyboard(char cmd[]){
  800019c:	0800050d 	.word	0x0800050d
  80001a0:	0800050d 	.word	0x0800050d
  80001a4:	0800050d 	.word	0x0800050d
- 80001a8:	080004f1 	.word	0x080004f1
+ 80001a8:	0800050d 	.word	0x0800050d
  80001ac:	0800050d 	.word	0x0800050d
  80001b0:	0800050d 	.word	0x0800050d
  80001b4:	0800050d 	.word	0x0800050d
@@ -183,7 +183,7 @@ void typeOnKeyboard(char cmd[]){
  8000270:	080003e9 	.word	0x080003e9
  8000274:	080003f3 	.word	0x080003f3
  8000278:	0800050d 	.word	0x0800050d
- 800027c:	0800050d 	.word	0x0800050d
+ 800027c:	080004f1 	.word	0x080004f1
  8000280:	0800050d 	.word	0x0800050d
  8000284:	0800050d 	.word	0x0800050d
  8000288:	0800050d 	.word	0x0800050d
@@ -532,8 +532,8 @@ void typeOnKeyboard(char cmd[]){
  80004ea:	2302      	movs	r3, #2
  80004ec:	72bb      	strb	r3, [r7, #10]
  80004ee:	e010      	b.n	8000512 <typeOnKeyboard+0x3b6>
-		    case '\'': KEYCODE = 0x34; break; // single quote
- 80004f0:	2334      	movs	r3, #52	@ 0x34
+		    case '\\': KEYCODE = 0x31; break;
+ 80004f0:	2331      	movs	r3, #49	@ 0x31
  80004f2:	72fb      	strb	r3, [r7, #11]
  80004f4:	e00d      	b.n	8000512 <typeOnKeyboard+0x3b6>
 		    case '\"': KEYCODE = 0x34; MODIFIER=0x02; break; // double quote
@@ -651,18 +651,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0)
- 8000588:	f44f 7100 	mov.w	r1, #512	@ 0x200
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 1)
+ 8000588:	f44f 6180 	mov.w	r1, #1024	@ 0x400
  800058c:	4804      	ldr	r0, [pc, #16]	@ (80005a0 <main+0x2c>)
  800058e:	f000 fc51 	bl	8000e34 <HAL_GPIO_ReadPin>
  8000592:	4603      	mov	r3, r0
- 8000594:	2b00      	cmp	r3, #0
+ 8000594:	2b01      	cmp	r3, #1
  8000596:	d1f7      	bne.n	8000588 <main+0x14>
 	  {
-		  typeOnKeyboard("Nu pizdec!");
+		  typeOnKeyboard("\\");
  8000598:	4802      	ldr	r0, [pc, #8]	@ (80005a4 <main+0x30>)
  800059a:	f7ff fddf 	bl	800015c <typeOnKeyboard>
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0)
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 1)
  800059e:	e7f3      	b.n	8000588 <main+0x14>
  80005a0:	40010800 	.word	0x40010800
  80005a4:	0800758c 	.word	0x0800758c
@@ -836,14 +836,14 @@ static void MX_GPIO_Init(void)
  80006a2:	683b      	ldr	r3, [r7, #0]
 
   /*Configure GPIO pin : PA9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_9;
- 80006a4:	f44f 7300 	mov.w	r3, #512	@ 0x200
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+ 80006a4:	f44f 6380 	mov.w	r3, #1024	@ 0x400
  80006a8:	60bb      	str	r3, [r7, #8]
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
  80006aa:	2300      	movs	r3, #0
  80006ac:	60fb      	str	r3, [r7, #12]
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
- 80006ae:	2300      	movs	r3, #0
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+ 80006ae:	2301      	movs	r3, #1
  80006b0:	613b      	str	r3, [r7, #16]
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
  80006b2:	f107 0308 	add.w	r3, r7, #8
@@ -1242,7 +1242,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  80007f0:	20000158 	.word	0x20000158
   ldr r2, =_sidata
- 80007f4:	08007614 	.word	0x08007614
+ 80007f4:	0800760c 	.word	0x0800760c
   ldr r2, =_sbss
  80007f8:	20000158 	.word	0x20000158
   ldr r4, =_ebss
@@ -7504,7 +7504,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  8002fb6:	bf00      	nop
  8002fb8:	40022000 	.word	0x40022000
  8002fbc:	40021000 	.word	0x40021000
- 8002fc0:	080075e0 	.word	0x080075e0
+ 8002fc0:	080075d8 	.word	0x080075d8
  8002fc4:	20000000 	.word	0x20000000
  8002fc8:	20000004 	.word	0x20000004
 
@@ -7639,8 +7639,8 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  800305e:	bf00      	nop
  8003060:	40021000 	.word	0x40021000
  8003064:	007a1200 	.word	0x007a1200
- 8003068:	080075f0 	.word	0x080075f0
- 800306c:	08007600 	.word	0x08007600
+ 8003068:	080075e8 	.word	0x080075e8
+ 800306c:	080075f8 	.word	0x080075f8
  8003070:	003d0900 	.word	0x003d0900
 
 08003074 <RCC_Delay>:
@@ -16339,7 +16339,7 @@ uint8_t * USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
  8006e70:	bd80      	pop	{r7, pc}
  8006e72:	bf00      	nop
  8006e74:	20000448 	.word	0x20000448
- 8006e78:	08007598 	.word	0x08007598
+ 8006e78:	08007590 	.word	0x08007590
 
 08006e7c <USBD_FS_ManufacturerStrDescriptor>:
   * @param  speed : Current device speed
@@ -16368,7 +16368,7 @@ uint8_t * USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *l
  8006e98:	46bd      	mov	sp, r7
  8006e9a:	bd80      	pop	{r7, pc}
  8006e9c:	20000448 	.word	0x20000448
- 8006ea0:	080075b0 	.word	0x080075b0
+ 8006ea0:	080075a8 	.word	0x080075a8
 
 08006ea4 <USBD_FS_SerialStrDescriptor>:
   * @param  speed : Current device speed
@@ -16447,7 +16447,7 @@ uint8_t * USBD_FS_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  8006ef8:	bd80      	pop	{r7, pc}
  8006efa:	bf00      	nop
  8006efc:	20000448 	.word	0x20000448
- 8006f00:	080075c4 	.word	0x080075c4
+ 8006f00:	080075bc 	.word	0x080075bc
 
 08006f04 <USBD_FS_InterfaceStrDescriptor>:
   * @param  speed : Current device speed
@@ -16491,7 +16491,7 @@ uint8_t * USBD_FS_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *leng
  8006f34:	bd80      	pop	{r7, pc}
  8006f36:	bf00      	nop
  8006f38:	20000448 	.word	0x20000448
- 8006f3c:	080075d0 	.word	0x080075d0
+ 8006f3c:	080075c8 	.word	0x080075c8
 
 08006f40 <Get_SerialNum>:
   * @brief  Create the serial number string descriptor
@@ -17618,10 +17618,10 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
  800755e:	4798      	blx	r3
  8007560:	3601      	adds	r6, #1
  8007562:	e7f2      	b.n	800754a <__libc_init_array+0x1e>
- 8007564:	0800760c 	.word	0x0800760c
- 8007568:	0800760c 	.word	0x0800760c
- 800756c:	0800760c 	.word	0x0800760c
- 8007570:	08007610 	.word	0x08007610
+ 8007564:	08007604 	.word	0x08007604
+ 8007568:	08007604 	.word	0x08007604
+ 800756c:	08007604 	.word	0x08007604
+ 8007570:	08007608 	.word	0x08007608
 
 08007574 <_init>:
  8007574:	b5f8      	push	{r3, r4, r5, r6, r7, lr}

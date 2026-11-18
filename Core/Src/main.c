@@ -146,7 +146,7 @@ void typeOnKeyboard(char cmd[]){
 		    case '-': KEYCODE = 0x2D; break;
 		    case ';': KEYCODE = 0x33; break; // semi-colon
 		    case ':': KEYCODE = 0x33; MODIFIER=0x02; break; // colon
-		    case '\'': KEYCODE = 0x34; break; // single quote
+		    case '\\': KEYCODE = 0x31; break;
 		    case '\"': KEYCODE = 0x34; MODIFIER=0x02; break; // double quote
 		    case '/': KEYCODE = 0x38; break; // slash
 		    case '.': KEYCODE = 0x37; break; // slash
@@ -209,9 +209,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0)
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 1)
 	  {
-		  typeOnKeyboard("Nu pizdec!");
+		  typeOnKeyboard("\\");
 	  }
     /* USER CODE END WHILE */
 
@@ -283,9 +283,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin : PA9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_9;
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
