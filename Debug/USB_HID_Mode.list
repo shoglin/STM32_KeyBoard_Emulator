@@ -651,18 +651,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 1)
- 8000588:	f44f 6180 	mov.w	r1, #1024	@ 0x400
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_15) == 0)
+ 8000588:	f44f 4100 	mov.w	r1, #32768	@ 0x8000
  800058c:	4804      	ldr	r0, [pc, #16]	@ (80005a0 <main+0x2c>)
  800058e:	f000 fc51 	bl	8000e34 <HAL_GPIO_ReadPin>
  8000592:	4603      	mov	r3, r0
- 8000594:	2b01      	cmp	r3, #1
+ 8000594:	2b00      	cmp	r3, #0
  8000596:	d1f7      	bne.n	8000588 <main+0x14>
 	  {
 		  typeOnKeyboard("\\");
  8000598:	4802      	ldr	r0, [pc, #8]	@ (80005a4 <main+0x30>)
  800059a:	f7ff fddf 	bl	800015c <typeOnKeyboard>
-	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) == 1)
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_15) == 0)
  800059e:	e7f3      	b.n	8000588 <main+0x14>
  80005a0:	40010800 	.word	0x40010800
  80005a4:	0800758c 	.word	0x0800758c
@@ -836,8 +836,8 @@ static void MX_GPIO_Init(void)
  80006a2:	683b      	ldr	r3, [r7, #0]
 
   /*Configure GPIO pin : PA9 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
- 80006a4:	f44f 6380 	mov.w	r3, #1024	@ 0x400
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+ 80006a4:	f44f 4300 	mov.w	r3, #32768	@ 0x8000
  80006a8:	60bb      	str	r3, [r7, #8]
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
  80006aa:	2300      	movs	r3, #0
